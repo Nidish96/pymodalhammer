@@ -1,0 +1,11 @@
+#+TITLE: Changelog
+
+* 0.1.0b1 — first beta (November 2026)
+First public release of pymodalhammer under the GNU GPL v3 or later.
+- Channel setup, acquisition setup (record, trigger, windows, averaging, hit checks), probe mode,
+  measurement with hit review, roving-hammer points, Data Viewer with re-processing and comparison.
+- External trigger output: hardware-timed (own clock + AI start trigger, or AI sample clock with
+  automatic fallback) or on demand; frame sync; pulses shown in probe mode; trigger log.
+- UFF 58 (FRF, coherence, auto-spectra, time) and TDMS (hits, continuous record) export.
+- Simulation back end, mock-driver tests and GUI workflow tests.
+- User manual (Org, exportable to PDF) with screenshots.
