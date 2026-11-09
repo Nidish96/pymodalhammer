@@ -1,0 +1,46 @@
+\contentsline {section}{\numberline {1}About pymodalhammer}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}What it does}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Status of this version}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Licence}{4}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Installation}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Requirements}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Installing}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}First start and simulation mode}{4}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Quick start}{4}{section.3}%
+\contentsline {section}{\numberline {4}The main window}{5}{section.4}%
+\contentsline {section}{\numberline {5}Channel Setup}{6}{section.5}%
+\contentsline {section}{\numberline {6}Acquisition Setup}{7}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Record}{7}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Trigger (hit detection)}{8}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Windows}{9}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Averaging and acceptance}{11}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Hit checks — what to do with a bad hit}{12}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}External trigger (e.g. a high-speed camera)}{13}{subsection.6.6}%
+\contentsline {section}{\numberline {7}Probe mode}{14}{section.7}%
+\contentsline {section}{\numberline {8}Measurement}{16}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Save options}{16}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Measurement point}{16}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Running a point}{17}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}The hit list}{17}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Manual review and ``Ask me''}{18}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Time domain, spectra and FRF}{18}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.7}Roving-hammer workflow, step by step}{20}{subsection.8.7}%
+\contentsline {subsection}{\numberline {8.8}Time data only (hammer channel alone)}{20}{subsection.8.8}%
+\contentsline {section}{\numberline {9}Data Viewer}{21}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Hits and re-processing}{21}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}FRF, time data and spectra}{22}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Compare runs}{24}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Saved files}{26}{section.10}%
+\contentsline {subsection}{\numberline {10.1}UFF 58 records}{27}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}TDMS hit file}{27}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}CSV logs}{27}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}Reading the files in Python}{28}{subsection.10.4}%
+\contentsline {section}{\numberline {11}How it works}{28}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Hit detection}{28}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Spectra and FRF estimators}{29}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Checks in detail}{29}{subsection.11.3}%
+\contentsline {section}{\numberline {12}Hardware notes}{29}{section.12}%
+\contentsline {section}{\numberline {13}Troubleshooting}{30}{section.13}%
+\contentsline {section}{\numberline {14}Testing and development}{30}{section.14}%
+\contentsline {section}{\numberline {15}Reporting problems}{31}{section.15}%
+\contentsline {section}{\numberline {16}Licence}{31}{section.16}%

@@ -147,7 +147,7 @@ def evaluate_hit(data: np.ndarray, channels: Sequence[ChannelConfig], ref_i: int
             checks.append(Check("Force level", ok,
                                 f"force {pk:.4g} {u} " + ("in" if ok else "outside")
                                 + f" {acq.force_min:g}…{acq.force_max:g} {u}", acq.force_action))
-        if acq.decay_action != NOCHECK:
+        if acq.decay_action != NOCHECK and len(channels) > 1:       # no responses: nothing to decay
             n = data.shape[1]
             tail = max(8, n // 20)
             worst, who = 0.0, ""
@@ -248,8 +248,8 @@ class FRFResult:
 
 
 def average(spectra: Sequence[np.ndarray], ref_i: int, freqs: np.ndarray) -> Optional[FRFResult]:
-    """FRFs from the spectra (n_ch, nf) of the included hits."""
-    if not spectra or ref_i < 0:
+    """FRFs from the spectra (n_ch, nf) of the included hits (None without hits or responses)."""
+    if not spectra or ref_i < 0 or np.shape(spectra[0])[0] < 2:
         return None
     S = np.stack(spectra)                       # (k, n_ch, nf)
     n_ch = S.shape[1]
@@ -299,6 +299,11 @@ class PointSession:
         self._result: Optional[FRFResult] = None
         self._dirty = True
         self.segment = 0
+
+    @property
+    def time_only(self) -> bool:
+        """Only the hammer channel: hits are kept as time data, there is no FRF."""
+        return len(self.channels) < 2
 
     def set_fs(self, fs: float):
         """The sample rate DAQmx actually uses (delta-sigma modules coerce it)."""

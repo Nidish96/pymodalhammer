@@ -57,6 +57,8 @@ FRFs, TDMS for time data) that open in modal-analysis software, DIAdem, LabVIEW 
   locked to the sample clock. Every pulse is logged with its exact sample index.
 - *Data Viewer*: FRFs, time data and spectra of saved points; re-processing with other hits or other
   windows; comparison of several points (FRF, amplitude spectrum and time data).
+- *Time data only*: with just the hammer channel enabled (no responses), the hits are recorded and
+  saved as time data, with the same trigger, checks and external trigger output, but without FRFs.
 - *Simulation mode*: a simulated hammer and structure, so everything can be tried without hardware.
 
 ** Status of this version
@@ -172,6 +174,9 @@ hammer of 2.25 mV/N can measure up to about 2200 N. Probe mode suggests sensible
 
 In a *roving-hammer* test the hammer's node and direction in this table are not used: they are set
 per measurement point on the Measurement tab (see [[*Measurement point]]).
+
+If the hammer is the only enabled channel, the measurement records *time data only* (see
+[[*Time data only (hammer channel alone)]]); the summary line says so.
 
 * Acquisition Setup
 #+CAPTION: Acquisition Setup. Left: all settings (the column scrolls). Right: a summary in plain words, a preview of the record and its windows, and the external trigger pulse.
@@ -496,6 +501,23 @@ resonance suggests leakage (use a longer record or the exponential window) or a 
 6. Move to the next point and continue until the grid is done.
 7. In the Data Viewer, compare the points (each curve is one hammer position).
 
+** Time data only (hammer channel alone)
+For impact experiments where only the force time history matters (no response sensors, no modal
+analysis), enable just the hammer channel and tick /Reference/ on it. The measurement then runs
+as usual, with these differences:
+- Record, trigger, pre-trigger, read size, settling and hold-off work exactly as before.
+- The hit checks still apply (overload, double hit, force level); the decay check is skipped,
+  since there is no response to decay.
+- /Averages/ is the number of hits to keep for a point; /When complete/ works as before.
+- The external trigger output works in every mode (start, every detected hit, every accepted hit,
+  first hit of the point, point complete, frame sync), and every pulse is logged.
+- No FRFs or auto-spectra are computed. The response plots and the /FRF & coherence/ view are
+  hidden; the hammer's time data and force spectrum are still shown.
+- A saved point contains =setup.json= (with ="time_only": true=), the hit log, the trigger log, the
+  hits in TDMS and, if ticked, the hits as UFF 58 time records, and the continuous record if
+  chosen. The frequency-domain UFF files are not written, even if ticked.
+- The Data Viewer opens such points on the /Time data/ tab; the FRF tab stays empty.
+
 * Data Viewer
 #+CAPTION: Data Viewer, FRF page: the hits of the chosen run (left, ticked = used), the re-processing box, and the FRF recomputed from the ticked hits.
 #+ATTR_LATEX: :width \textwidth :placement [H]
@@ -724,6 +746,8 @@ QT_QPA_PLATFORM=offscreen python tests/gui_smoke.py out/
 QT_QPA_PLATFORM=offscreen python tests/gui_autoadvance.py
 # probe mode shows the trigger pulse
 QT_QPA_PLATFORM=offscreen python tests/gui_probe_pulse.py
+# hammer channel alone: time data only, with trigger pulses
+QT_QPA_PLATFORM=offscreen python tests/gui_time_only.py
 #+end_src
 The tests use their own settings, so they never change your saved setup. The screenshots in this
 manual are made by =tools/make_screenshots.py= from a simulated session.
