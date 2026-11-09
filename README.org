@@ -4,6 +4,12 @@
 *Impact-hammer modal testing with NI-DAQmx* — a PySide6 desktop program for NI CompactDAQ
 hardware. Version *0.1.0b1* (first beta). Licensed under the GNU GPL v3 or later.
 
+#+begin_quote
+*Disclaimer:* this program was created with the help of AI. It comes with *no guarantee of
+correctness*. I have been using it quite extensively, but please check your results against a
+known reference before relying on them.
+#+end_quote
+
 * What it does
 - Continuous acquisition; every hit on the hammer is captured with a pre-trigger, none is missed.
 - Quality checks per hit (overload, double hit, force level, decay) with a chosen action each:
@@ -29,8 +35,8 @@ pymodalhammer                  # or: python -m pymodalhammer
 Without NI hardware the program starts in simulation mode.
 
 * Documentation
-The user manual is [[file:docs/pymodalhammer_manual.org][docs/pymodalhammer_manual.org]] (also built as
-[[file:docs/pymodalhammer_manual.pdf][docs/pymodalhammer_manual.pdf]]). Rebuild the PDF with
+The user manual is [[file:docs/pymodalhammer_manual.org][docs/pymodalhammer_manual.org]]; a ready-to-read PDF export is
+[[file:docs/pymodalhammer_manual.pdf][docs/pymodalhammer_manual.pdf]]. Rebuild the PDF with
 =docs/export_pdf.sh= or =C-c C-e l p= in Emacs (needs XeLaTeX and the DejaVu fonts).
 
 * Project layout
