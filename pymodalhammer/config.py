@@ -313,6 +313,15 @@ class AppConfig:
                     return i
         return self.reference_index()
 
+    def response_count(self) -> int:
+        """Enabled channels other than the hammer (reference)."""
+        return sum(1 for c in self.enabled_channels() if not c.is_reference)
+
+    @property
+    def time_only(self) -> bool:
+        """Only the hammer channel is enabled: the hits are recorded as time data, no FRFs."""
+        return self.reference_index() >= 0 and self.response_count() == 0
+
     def labelled_channels(self) -> List[ChannelConfig]:
         """Enabled channels with the measurement point applied: in roving-hammer mode the reference
         channel's node and direction are the point's."""
@@ -342,7 +351,8 @@ class AppConfig:
                    null_bridges=d.get("null_bridges", True))
 
     def validate(self, probe: bool = False) -> List[str]:
-        """Human-readable problems (empty = OK). Probe mode needs no reference/response pair."""
+        """Human-readable problems (empty = OK). Probe mode needs no reference. Without response channels
+        the measurement records time data only (see `time_only`)."""
         errs = []
         ch = self.enabled_channels()
         a = self.acq
@@ -352,8 +362,6 @@ class AppConfig:
         if not probe:
             if len(refs) != 1:
                 errs.append("Exactly one enabled channel must be marked as the Reference (the hammer force).")
-            if len(ch) - len(refs) < 1:
-                errs.append("At least one response channel (non-reference) is needed.")
         phys = [c.physical.strip() for c in ch]
         dup = {p for p in phys if phys.count(p) > 1}
         if dup:
@@ -395,11 +403,11 @@ class AppConfig:
         if not probe:
             if a.n_averages < 1:
                 errs.append("Number of averages must be ≥ 1.")
-            if a.force_window == FORCE_WINDOWS[0]:
+            if a.force_window == FORCE_WINDOWS[0] and not self.time_only:
                 pre_ms = a.pre_samples / a.fs * 1000 if a.fs > 0 else 0
                 if a.force_width_ms <= 0 or pre_ms + a.force_width_ms + a.force_taper_ms > a.record_s * 1000:
                     errs.append("Force window: the width (+ taper) must be > 0 and fit in the record.")
-            if a.resp_window == RESP_WINDOWS[0] and not 0.01 <= a.exp_end_pct <= 100:
+            if a.resp_window == RESP_WINDOWS[0] and not self.time_only and not 0.01 <= a.exp_end_pct <= 100:
                 errs.append("Exponential window: the end value must be between 0.01 and 100 %.")
             if a.force_action != NOCHECK and not 0 <= a.force_min < a.force_max:
                 errs.append("Force-level check: need 0 ≤ minimum < maximum.")

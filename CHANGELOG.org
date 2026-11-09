@@ -1,5 +1,11 @@
 #+TITLE: Changelog
 
+* Unreleased
+- Time data only: a measurement with the hammer as the only enabled channel (no responses) records
+  and saves the hits as time data (TDMS, optional UFF 58 time records, hit and trigger logs) with
+  the usual trigger, checks and external trigger output; no FRFs are computed or saved. The
+  decay check is skipped without responses.
+
 * 0.1.0b1 — first beta (November 2026)
 First public release of pymodalhammer under the GNU GPL v3 or later.
 - Channel setup, acquisition setup (record, trigger, windows, averaging, hit checks), probe mode,

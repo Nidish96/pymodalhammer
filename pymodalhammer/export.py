@@ -118,7 +118,8 @@ def _chan_props(c: ChannelConfig, fs: float, n: int, t0, offset: float = 0.0) ->
 
 def root_properties(cfg: AppConfig, fs: float, extra: Optional[Dict] = None) -> Dict:
     a = cfg.acq
-    p = {"name": cfg.save.basename, "description": "Impact hammer modal test",
+    p = {"name": cfg.save.basename,
+         "description": "Impact test, time data only" if cfg.time_only else "Impact hammer modal test",
          "sample_rate_Hz": fs, "record_samples": a.block_size, "pretrigger_samples": a.pre_samples,
          "trigger_level": a.trig_level, "trigger_slope": a.trig_slope, "force_window": a.force_window,
          "force_width_ms": a.force_width_ms, "force_taper_ms": a.force_taper_ms, "response_window": a.resp_window,
@@ -237,11 +238,15 @@ def save_point(folder: str, cfg: AppConfig, session: PointSession, pulses: Seque
     ref = chans[session.ref_i]
     resp = [chans[i] for i in range(len(chans)) if i != session.ref_i]
     files = []
-    res = session.result()
-    info = (f"Impact test, {res.n_avg if res else 0} avg, fs {fs:g} Hz, N {session.n}, "
-            f"{cfg.acq.resp_window.split(' ')[0]} window")
+    res = session.result()                       # None without response channels (time data only)
+    n_inc = session.n_included()
+    if session.time_only:
+        info = f"Impact test, time data only, {n_inc} hits, fs {fs:g} Hz, N {session.n}"
+    else:
+        info = (f"Impact test, {n_inc} avg, fs {fs:g} Hz, N {session.n}, "
+                f"{cfg.acq.resp_window.split(' ')[0]} window")
     meta = {"saved": _dt.datetime.now().isoformat(timespec="seconds"), "fs_actual": fs,
-            "n_averages": res.n_avg if res else 0, "hits": session.summary(),
+            "n_averages": n_inc, "time_only": session.time_only, "hits": session.summary(),
             "exp_tau_s": session.win.tau if np.isfinite(session.win.tau) else None}
     with open(os.path.join(folder, "setup.json"), "w", encoding="utf-8") as f:
         d = json.loads(cfg.to_json())

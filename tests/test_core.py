@@ -165,6 +165,37 @@ def test_save_and_reload():
         assert np.isfinite(force_rolloff(r.freqs, np.sqrt(r.Gxx)))
 
 
+def test_time_only_hammer_channel():
+    """Only the hammer enabled: hits are detected and saved as time data, no FRF files, external
+    trigger pulses still sent and logged."""
+    cfg = default_config()
+    for c in cfg.channels[1:]:
+        c.enabled = False
+    cfg.trigger.enabled = True
+    cfg.trigger.mode = TRIGGER_MODES[1]                 # every detected hit
+    assert cfg.time_only
+    with tempfile.TemporaryDirectory() as d:
+        cfg.save.folder = d
+        cfg.save.uff_time = True
+        assert cfg.validate() == [], cfg.validate()
+        hits, pulses, logs, summ, be = run_sim(cfg, 25)
+        assert len(hits) >= 4 and pulses, logs
+        assert all(h.data.shape[0] == 1 for h in hits)
+        assert all(c.name != "Decay" for c in hits[0].checks)
+        s = PointSession(cfg.labelled_channels(), cfg.reference_index(), cfg.acq, summ.fs)
+        for h in hits:
+            s.add(h)
+        assert s.time_only and s.result() is None and s.n_included() > 0
+        files = save_point(point_folder(cfg), cfg, s, pulses, summ.fs)
+        names = {os.path.basename(f) for f in files}
+        assert names == {"setup.json", "impact_test_time.uff", "impact_test_hits.tdms",
+                         "impact_test_hit_log.csv", "impact_test_trigger_log.csv"}, names
+        run = scan_run(os.path.dirname(files[0]))
+        assert run.ok and run.meta["time_only"] and run.meta["n_averages"] == s.n_included()
+        assert len(load_hits(run)) == len(s.hits) and frf_table(run) == {}
+        assert recompute(run, [h["group"] for h in load_hits(run)]) is None
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

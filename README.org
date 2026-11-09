@@ -25,6 +25,8 @@ known reference before relying on them.
 - Saves FRFs as UFF 58 and time data as TDMS, with hit and trigger logs.
 - *Data Viewer*: FRFs, time data and spectra of saved points, re-processing, and comparison of
   several points (FRF, spectrum, time data).
+- *Time data only*: with just the hammer channel (no responses) the hits are recorded and saved as
+  time data, with the same trigger settings and external trigger output, and no FRFs.
 - *Simulation mode*: try everything without hardware.
 
 * Install and run
@@ -54,6 +56,7 @@ python tests/test_ni_mock.py
 QT_QPA_PLATFORM=offscreen python tests/gui_smoke.py /tmp/shots
 QT_QPA_PLATFORM=offscreen python tests/gui_autoadvance.py
 QT_QPA_PLATFORM=offscreen python tests/gui_probe_pulse.py
+QT_QPA_PLATFORM=offscreen python tests/gui_time_only.py
 #+end_src
 
 * Status

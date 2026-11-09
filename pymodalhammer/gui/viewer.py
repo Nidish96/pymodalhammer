@@ -311,6 +311,8 @@ class ViewerTab(QWidget):
             combo.addItems(names)
             combo.setCurrentIndex(min(default, combo.count() - 1))
             combo.blockSignals(False)
+        if len(run.channels) < 2 and self.tabs.currentIndex() == 0:     # time data only: no FRF to show
+            self.tabs.setCurrentIndex(1)
         self._fill_resp()
 
     def _tick(self, pred):
@@ -514,6 +516,9 @@ class ViewerTab(QWidget):
         run = self.run
         if not run or not run.ok or not self._ticked():
             QMessageBox.information(self, "Save", "Load a run with saved hits and tick some hits first.")
+            return
+        if len(run.channels) < 2:
+            QMessageBox.information(self, "Save", "This run has time data only (no response channels): no FRFs.")
             return
         d = QFileDialog.getExistingDirectory(self, "Folder for the re-processed UFF files", run.folder)
         if not d:

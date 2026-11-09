@@ -426,6 +426,8 @@ class MainWindow(QMainWindow):
         self.meas.append_log(f"---- {time.strftime('%H:%M:%S')} start, segment {self.segment} "
                              f"({'simulation' if self.act_sim.isChecked() else 'hardware'}), point "
                              f"{self._point_text(cfg)} ----")
+        if cfg.time_only:
+            self.meas.append_log("Only the hammer channel is enabled: time data only, no FRFs are computed or saved.")
         self.settings.setValue("last_setup", cfg.to_json())
         self._set_editing_enabled(False)
         self.meas.set_running(True)
@@ -467,7 +469,8 @@ class MainWindow(QMainWindow):
         elif t < a.settle_s:
             self.meas.set_phase(f"Settling sensors… {a.settle_s - t:.1f} s")
         else:
-            self.meas.set_phase(f"ARMED — hit the structure ({n} of {N} averages)  ·  "
+            what = "hits" if self.session.time_only else "averages"
+            self.meas.set_phase(f"ARMED — hit the structure ({n} of {N} {what})  ·  "
                                 f"{self._point_text(self.session_cfg)}")
 
     @Slot(object)

@@ -395,7 +395,8 @@ class ChannelTable(QWidget):
         txt = f"{len(en)} of {len(ch)} channels enabled · "
         if len(ref) == 1:
             txt += (f"hammer (reference): <b>{ref[0].name}</b> (node {ref[0].node}{ref[0].direction}) · "
-                    f"{len(en) - 1} response channel(s) → {len(en) - 1} FRFs")
+                    + (f"{len(en) - 1} response channel(s) → {len(en) - 1} FRFs" if len(en) > 1 else
+                       "no response channels → <b>time data only</b> (hits recorded and saved, no FRFs)"))
         else:
             txt += "<span style='color:#c0392b'><b>tick Reference on the hammer (exactly one enabled channel)</b></span>"
         self.summary.setText(txt)

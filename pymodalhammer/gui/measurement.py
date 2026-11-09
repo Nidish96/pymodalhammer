@@ -315,7 +315,8 @@ class MeasurementTab(QWidget):
         rl2 = QVBoxLayout(rw)
         rl2.setContentsMargins(0, 0, 0, 0)
         sel = QHBoxLayout()
-        sel.addWidget(QLabel("<b>Response</b>"))
+        self.resp_l = QLabel("<b>Response</b>")
+        sel.addWidget(self.resp_l)
         sel.addWidget(self.resp, 1)
         sel.addWidget(QLabel("Show"))
         sel.addWidget(self.overlay, 1)
@@ -414,10 +415,21 @@ class MeasurementTab(QWidget):
             self.resp.blockSignals(False)
             self.progress.setMaximum(session.acq.n_averages)
             self.frf.set_band(None)
+            self._set_time_only(session.time_only)
             self._trig_level = trig_level
         self.progress.setValue(0)
         self._update_buttons()
         self._redraw()
+
+    def _set_time_only(self, on: bool):
+        """Only the hammer channel: hide the response plots and the FRF tab; nothing to save in the
+        frequency domain."""
+        for w in (self.p_r, self.p_rs, self.resp_l, self.resp):
+            w.setVisible(not on)
+        self.right_tabs.setTabVisible(2, not on)
+        if on and self.right_tabs.currentIndex() == 2:
+            self.right_tabs.setCurrentIndex(0)
+        self.save_uff.setToolTip("Not used: no response channels, so no FRFs (time data only)" if on else "")
 
     def set_running(self, running: bool):
         self._running = running
@@ -676,7 +688,7 @@ class MeasurementTab(QWidget):
         cf = self.channels[s.ref_i]
         if res is None or j is None:
             self.frf.clear()
-            self.navg.setText("no averaged hits yet")
+            self.navg.setText("time data only (no response channels)" if s.time_only else "no averaged hits yet")
         else:
             jj = res.resp_i.index(j)
             curves = {k: getattr(res, k)[jj][1:] if self.est_cb[k].isChecked() else None for k in ("H1", "H2", "Hv")}
