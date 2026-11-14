@@ -41,6 +41,11 @@ The user manual is [[file:docs/pymodalhammer_manual.org][docs/pymodalhammer_manu
 [[file:docs/pymodalhammer_manual.pdf][docs/pymodalhammer_manual.pdf]]. Rebuild the PDF with
 =docs/export_pdf.sh= or =C-c C-e l p= in Emacs (needs XeLaTeX and the DejaVu fonts).
 
+* Modal analysis post-processing
+The modal results saved by pymodalhammer can be used for modal analysis post-processing, including
+modal fitting and SEREP, in the
+[[https://github.com/Nidish96/SDynPy-WorkBench/tree/main][SDynPy WorkBench]].
+
 * Project layout
 | Path                   | Contents                                                         |
 |------------------------+------------------------------------------------------------------|
